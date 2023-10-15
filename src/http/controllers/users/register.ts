@@ -1,23 +1,21 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { RegisterUseCase } from "../../../use-cases/register";
-import { MongoUsersRepository } from "../../../repositories/mongo-users-repository";
+import { MongoUsersRepository } from "../../../repositories/mongo/mongo-users-repository";
+import { UserAlreadyExistsError } from "../../../use-cases/errors/user-already-exists-error";
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {
-  //validaçao dos dados
   const registerBodySchema = z.object({
     name: z.string(),
     email: z.string().email(),
     password: z.string().min(6),
-  });
+  })
 
   const { name, email, password } = registerBodySchema.parse(request.body);
 
-  // const registerUseCase = makeRegisterUseCase()
-
   try {
-    const mongoUsersRepository = new MongoUsersRepository();
-    const registerUseCase = new RegisterUseCase(mongoUsersRepository);
+    const mongoUsersRepository = new MongoUsersRepository(); // instanciei o repositorio
+    const registerUseCase = new RegisterUseCase(mongoUsersRepository); //mandei o repo para o use case
 
     await registerUseCase.execute({
       name,
@@ -25,9 +23,10 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       password,
     });
   } catch (err) {
-    // if(err instanceof UserAlreadyExistsError) {
-      return reply.status(500).send('Error')
-    // }
+    if (err instanceof UserAlreadyExistsError) {
+      return reply.status(409).send({ message: err.message});
+    }
+    throw err;
   }
 
   return reply.status(201).send();

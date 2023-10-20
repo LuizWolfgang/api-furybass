@@ -1,8 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
-import { RegisterUseCase } from "../../../use-cases/register";
-import { MongoUsersRepository } from "../../../repositories/mongo/mongo-users-repository";
 import { UserAlreadyExistsError } from "../../../use-cases/errors/user-already-exists-error";
+import { makeRegisterUseCase } from "../../../use-cases/factories/make-register-use-case";
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
@@ -14,8 +13,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   const { name, email, password } = registerBodySchema.parse(request.body);
 
   try {
-    const mongoUsersRepository = new MongoUsersRepository(); // instanciei o repositorio
-    const registerUseCase = new RegisterUseCase(mongoUsersRepository); //mandei o repo para o use case
+    const registerUseCase = makeRegisterUseCase()
 
     await registerUseCase.execute({
       name,

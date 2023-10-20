@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 
-export const At = model(
-  "At",
+export const Service = model(
+  "Service",
   new Schema({
     title: {
       type: String,
@@ -12,6 +12,14 @@ export const At = model(
       required: true,
     },
     number: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    type: {
       type: String,
       required: true,
     },

@@ -4,6 +4,11 @@ import { Iuser, UsersRepository } from "../users-repository";
 export class MongoUsersRepository implements UsersRepository {
   async findByEmail(email: string) {
     const user = await User.findOne({ email })
+
+    if(!user) {
+      return null
+    }
+
     return user
   }
 

@@ -5,7 +5,7 @@ export interface Iuser {
   password: string;
 }
 
-export interface UsersRepository {
+export interface usersRepository {
   findById(id: string): Promise<Iuser | null>;
   findByEmail(email: string): Promise<Iuser | null>;
   create(data: Iuser): Promise<Iuser>;

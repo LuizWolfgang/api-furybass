@@ -38,7 +38,7 @@ describe('Vehicle Use Case', () => {
 
     console.log('VEICULO', vehicle)
 
-    expect(vehicle.vehicle.userId).toEqual(expect.any(String))
+    expect(vehicle.Vehicle.userId).toEqual(expect.any(String))
   })
 
 })

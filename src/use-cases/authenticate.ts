@@ -1,5 +1,5 @@
 import { compare } from "bcryptjs";
-import { Iuser, UsersRepository } from "../repositories/users-repository";
+import { Iuser, usersRepository } from "../repositories/users-repository";
 import { InvalidCredentialsError } from "./errors/invalid-credentials-error";
 
 interface AuthenticateUseCaseRequest {
@@ -12,7 +12,7 @@ interface AuthenticateUseCaseResponse {
 }
 
 export class AuthenticateUseCase {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(private usersRepository: usersRepository) {}
   async execute({email,password}: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse>{
       const user = await this.usersRepository.findByEmail(email)
 

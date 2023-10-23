@@ -1,4 +1,4 @@
-import { Iuser, UsersRepository } from "../repositories/users-repository";
+import { Iuser, usersRepository } from "../repositories/users-repository";
 import { ResourceNotExistErro } from "./errors/resource-not-exists-error";
 
 interface getUserUseCaseRequest {
@@ -10,7 +10,7 @@ interface getUserUseCaseResponse {
 }
 
 export class getUserUseCase {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(private usersRepository: usersRepository) {}
   async execute({ userId }: getUserUseCaseRequest): Promise<getUserUseCaseResponse>{
       const user = await this.usersRepository.findById(userId)
 

@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
-import { Iuser, UsersRepository } from '../users-repository'
+import { Iuser, usersRepository } from '../users-repository'
 
-export class InMemoryUsersRepository implements UsersRepository {
+export class InMemoryUsersRepository implements usersRepository {
   public items: Iuser[] = []
 
   async findById(id: string) {

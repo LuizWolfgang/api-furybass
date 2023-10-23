@@ -1,10 +1,7 @@
+import { Iservice, serviceRepository } from "../repositories/service-repository";
 
-import {
-  Ivehicle,
-  vehicleRepository,
-} from "../repositories/vehicle-repository";
 
-interface CreateVehicleUseCaseRequest {
+interface CreateServiceUseCaseRequest {
   userId: string;
   title: string;
   description: string;
@@ -14,20 +11,18 @@ interface CreateVehicleUseCaseRequest {
   type: string;
   country: string;
   city: string;
-  km: string;
-  year: string;
   mediaUrls: {
     url: string;
     fileType: string;
   }[];
 }
 
-interface CreateVehicleUseCaseResponse {
-  Vehicle: Ivehicle;
+interface CreateServiceUseCaseResponse {
+  Service: Iservice;
 }
 
-export class CreateVehicleUseCase {
-  constructor(private vehicleRepository: vehicleRepository) {}
+export class CreateServiceUseCase {
+  constructor(private ServiceRepository: serviceRepository) {}
   async execute({
     userId,
     title,
@@ -38,11 +33,9 @@ export class CreateVehicleUseCase {
     type,
     country,
     city,
-    km,
-    year,
     mediaUrls
-  }: CreateVehicleUseCaseRequest): Promise<CreateVehicleUseCaseResponse> {
-    const Vehicle = await this.vehicleRepository.create({
+  }: CreateServiceUseCaseRequest): Promise<CreateServiceUseCaseResponse> {
+    const Service = await this.ServiceRepository.create({
       userId,
       title,
       description,
@@ -52,13 +45,11 @@ export class CreateVehicleUseCase {
       type,
       country,
       city,
-      km,
-      year,
       mediaUrls,
     });
 
     return {
-      Vehicle,
+      Service,
     };
   }
 }

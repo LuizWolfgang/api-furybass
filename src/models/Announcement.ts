@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 
-export const Service = model(
-  "Service",
+export const Announcement = model(
+  "Announcement",
   new Schema({
     title: {
       type: String,
@@ -15,15 +15,15 @@ export const Service = model(
       type: String,
       required: true,
     },
+    price: {
+      type: String,
+      required: true,
+    },
     category: {
       type: String,
       required: true,
     },
     type: {
-      type: String,
-      required: true,
-    },
-    price: {
       type: String,
       required: true,
     },
@@ -34,6 +34,18 @@ export const Service = model(
     city: {
       type: String,
       required: true,
+    },
+    km: {
+      type: String,
+      required: false,
+    },
+    year: {
+      type: String,
+      required: false,
+    },
+    brand: {
+      type: String,
+      required: false,
     },
     mediaUrls: [
       {

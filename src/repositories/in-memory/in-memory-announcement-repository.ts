@@ -1,16 +1,39 @@
-import { Ivehicle, vehicleRepository } from '../announcement-repository'
+import { IAnnouncement, announcementRepository } from '../announcement-repository'
 
-export class InMemoryVehiclesRepository implements vehicleRepository {
+export class InMemoryAnnouncementRepository implements announcementRepository {
 
-  public items: Ivehicle[] = []
+  public items: IAnnouncement[] = []
 
-  async create(data: Ivehicle): Promise<Ivehicle> {
+  async create(data: IAnnouncement): Promise<IAnnouncement> {
     this.items.push(data);
     return data;
   }
 
-  async findManyVehicles(page: number){
-    return this.items
-    .slice((page - 1) * 20, page * 20)
+  async findManyAnnouncement(page: number, category:string){
+    return this.items.filter((item) => item.category.includes(category))
+    .slice((page - 1) * 10, page * 10)
+  }
+
+  async findById(id: string) {
+    const announcement = this.items.find((item) => item.userId === id)
+
+    if (!announcement) {
+      return null
+    }
+
+    return announcement
+  }
+
+
+  async delete(announcement: IAnnouncement){
+    const itemIndex = this.items.findIndex((item) => item.userId === announcement.userId)
+
+    this.items.splice(itemIndex, 1)
+  }
+
+  async save(announcement: IAnnouncement){
+    const itemIndex = this.items.findIndex((item) => item.userId === announcement.userId)
+
+      this.items[itemIndex] = announcement
   }
 }

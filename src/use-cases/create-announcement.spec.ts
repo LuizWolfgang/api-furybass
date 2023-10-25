@@ -1,14 +1,14 @@
-import { InMemoryVehiclesRepository } from '../repositories/in-memory/in-memory-announcement-repository'
-import { CreateVehicleUseCase } from './create-announcement'
+import { InMemoryAnnouncementRepository } from '../repositories/in-memory/in-memory-announcement-repository'
 import { expect, describe, it, beforeEach } from 'vitest'
+import { CreateAnnouncementUseCase } from './create-announcement'
 
-let vehiclesRepository: InMemoryVehiclesRepository
-let sut: CreateVehicleUseCase
+let announcementRepository: InMemoryAnnouncementRepository
+let sut: CreateAnnouncementUseCase
 
 describe('Announcement Use Case', () => {
   beforeEach(() => {
-    vehiclesRepository = new InMemoryVehiclesRepository()
-    sut = new CreateVehicleUseCase(vehiclesRepository)
+    announcementRepository = new InMemoryAnnouncementRepository()
+    sut = new CreateAnnouncementUseCase(announcementRepository)
   })
 
   it('should be able to create announcement', async () => {

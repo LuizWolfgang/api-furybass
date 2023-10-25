@@ -1,10 +1,7 @@
-import {
-  Ivehicle,
-  vehicleRepository,
-} from "../repositories/announcement-repository";
+import { IAnnouncement, announcementRepository } from "../repositories/announcement-repository";
 import { ResourceNotExistErro } from "./errors/resource-not-exists-error";
 
-interface CreateVehicleUseCaseRequest {
+interface CreateAnnouncementUseCaseRequest {
   userId: string;
   title: string;
   description: string;
@@ -23,12 +20,12 @@ interface CreateVehicleUseCaseRequest {
   }[];
 }
 
-interface CreateVehicleUseCaseResponse {
-  announcement: Ivehicle;
+interface CreateAnnouncementUseCaseResponse {
+  announcement: IAnnouncement;
 }
 
-export class CreateVehicleUseCase {
-  constructor(private vehicleRepository: vehicleRepository) {}
+export class CreateAnnouncementUseCase {
+  constructor(private AnnouncementRepository: announcementRepository) {}
   async execute({
     title,
     description,
@@ -43,14 +40,14 @@ export class CreateVehicleUseCase {
     year,
     mediaUrls,
     userId,
-  }: CreateVehicleUseCaseRequest): Promise<CreateVehicleUseCaseResponse> {
+  }: CreateAnnouncementUseCaseRequest): Promise<CreateAnnouncementUseCaseResponse> {
     if (
       category.includes("veiculo") ||
       category.includes("produto") ||
       category.includes("servico")
     ) {
       if (category === "veiculo") {
-        const announcementVehicle = {
+        const announcementAnnouncement = {
           userId,
           title,
           description,
@@ -65,8 +62,8 @@ export class CreateVehicleUseCase {
           mediaUrls,
         };
 
-        const announcement = await this.vehicleRepository.create(
-          announcementVehicle
+        const announcement = await this.AnnouncementRepository.create(
+          announcementAnnouncement
         );
 
         return {
@@ -89,7 +86,7 @@ export class CreateVehicleUseCase {
           mediaUrls,
         };
 
-        const announcement = await this.vehicleRepository.create(
+        const announcement = await this.AnnouncementRepository.create(
           announcementProduct
         );
 
@@ -112,7 +109,7 @@ export class CreateVehicleUseCase {
           mediaUrls,
         };
 
-        const announcement = await this.vehicleRepository.create(
+        const announcement = await this.AnnouncementRepository.create(
           announcementProduct
         );
 

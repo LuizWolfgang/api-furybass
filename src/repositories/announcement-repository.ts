@@ -1,4 +1,4 @@
-export interface Ivehicle {
+export interface IAnnouncement {
   userId: string;
   title: string;
   description: string;
@@ -15,9 +15,10 @@ export interface Ivehicle {
   createdAt?: Date;
 }
 
-export interface vehicleRepository {
-  // findById(id: string): Promise<Iuser | null>;
-  // findByEmail(email: string): Promise<Iuser | null>;
-  findManyVehicles(page: number): Promise<Ivehicle[]>;
-  create(data: Ivehicle): Promise<Ivehicle>;
+export interface announcementRepository {
+  findById(id: string): Promise<IAnnouncement | null>;
+  findManyAnnouncement(page: number, category: string): Promise<IAnnouncement[]>;
+  create(data: IAnnouncement): Promise<IAnnouncement>;
+  delete(announcement: IAnnouncement): Promise<void>
+  save(announcement: IAnnouncement): Promise<void>;
 }

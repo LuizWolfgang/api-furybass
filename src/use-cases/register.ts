@@ -1,5 +1,5 @@
 import { hash } from "bcryptjs";
-import { Iuser, UsersRepository } from "../repositories/users-repository";
+import { Iuser, usersRepository } from "../repositories/users-repository";
 import { UserAlreadyExistsError } from "./errors/user-already-exists-error";
 
 /*
@@ -19,7 +19,7 @@ interface RegisterUseCaseResponse {
 }
 
 export class RegisterUseCase {
-  constructor(private usersRepository: UsersRepository) {} //recebi meu repositorio
+  constructor(private usersRepository: usersRepository) {} //recebi meu repositorio
   async execute({
     name,
     email,

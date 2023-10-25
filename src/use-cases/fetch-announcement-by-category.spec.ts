@@ -1,21 +1,22 @@
-import { InMemoryVehiclesRepository } from '../repositories/in-memory/in-memory-announcement-repository'
-import { expect, describe, it, beforeEach } from 'vitest'
-import { FetchAllVehiclesUseCase } from './fetch-all-vehicles'
 
-let vehiclesRepository: InMemoryVehiclesRepository
+import { expect, describe, it, beforeEach } from 'vitest'
+import { FetchAllVehiclesUseCase } from './fetch-announcement-by-category'
+import { InMemoryAnnouncementRepository } from '../repositories/in-memory/in-memory-announcement-repository'
+
+let announcementRepository: InMemoryAnnouncementRepository
 let sut: FetchAllVehiclesUseCase
 
-describe('Fetch All Vehicle Use Case', () => {
+describe('Fetch All Announcement Use Case', () => {
   beforeEach(() => {
-    vehiclesRepository = new InMemoryVehiclesRepository()
-    sut = new FetchAllVehiclesUseCase(vehiclesRepository)
+    announcementRepository = new InMemoryAnnouncementRepository()
+    sut = new FetchAllVehiclesUseCase(announcementRepository)
   })
 
-  it('should be able to create vehicle', async () => {
+  it('should be able to create announcement', async () => {
 
-    await vehiclesRepository.create({
+    await announcementRepository.create({
       userId: '4321',
-      title: 'aaaa',
+      title: 'saveiro',
       description: 'luiz andre',
       number: '3243423432',
       price: '3001',
@@ -37,9 +38,9 @@ describe('Fetch All Vehicle Use Case', () => {
       ]
     })
 
-    await vehiclesRepository.create({
+    await announcementRepository.create({
       userId: '1234',
-      title: 'aaaa',
+      title: 'golf',
       description: 'luiz andre',
       number: '3243423432',
       price: '3001',
@@ -61,29 +62,28 @@ describe('Fetch All Vehicle Use Case', () => {
       ]
     })
 
-    const { vehicles } = await sut.execute({
+    const { announcement } = await sut.execute({
       page: 1,
+      category: 'veiculo',
     })
 
-    expect(vehicles).toHaveLength(2)
-    expect(vehicles).toEqual([
-      expect.objectContaining({ userId: '4321' }),
-      expect.objectContaining({ userId: '1234' }),
+
+    expect(announcement).toHaveLength(2);
+    expect(announcement).toEqual([
+      expect.objectContaining({  title: 'saveiro' }),
+      expect.objectContaining({ title: 'golf' }),
     ])
-
-
-    // expect(vehicle.Vehicle.userId).toEqual(expect.any(String))
   })
 
-  it('should be able to fetch paginated veiches', async () => {
-    for (let i = 1; i <= 22; i++) {
-      await vehiclesRepository.create({
+  it('should be able to fetch paginated announcement', async () => {
+    for (let i = 1; i <= 12; i++) {
+      await announcementRepository.create({
       userId: `id-${i}`,
       title: 'aaaa',
       description: 'luiz andre',
       number: '3243423432',
       price: '3001',
-      category: 'veiculo',
+      category: 'servico',
       type: 'rebaixado',
       country: 'DF',
       city: 'brasilia',
@@ -102,14 +102,15 @@ describe('Fetch All Vehicle Use Case', () => {
       })
     }
 
-    const { vehicles } = await sut.execute({
+    const { announcement } = await sut.execute({
       page: 2,
+      category: 'servico'
     })
 
-    expect(vehicles).toHaveLength(2)
-    expect(vehicles).toEqual([
-      expect.objectContaining({ userId: 'id-21' }),
-      expect.objectContaining({ userId: 'id-22' }),
+    expect(announcement).toHaveLength(2)
+    expect(announcement).toEqual([
+      expect.objectContaining({ userId: 'id-11' }),
+      expect.objectContaining({ userId: 'id-12' }),
     ])
   })
 })

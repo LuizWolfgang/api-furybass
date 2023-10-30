@@ -25,21 +25,25 @@ export class RegisterUseCase {
     email,
     password,
   }: RegisterUseCaseRequest): Promise<RegisterUseCaseResponse> {
-    const password_hash = await hash(password, 6);
+    const password_hash = await hash(password, 6)
 
-    const userWithSameEmail = await this.usersRepository.findByEmail(email);
+    console.log('passhord_hash', password_hash);
+
+    const userWithSameEmail = await this.usersRepository.findByEmail(email)
+
+    console.log('userWithSameEmail', userWithSameEmail);
 
     if (userWithSameEmail) {
-      throw new UserAlreadyExistsError();
-      //return reply.status(409).send -> não fazer isso, exclusivo da parte HTTP
+      throw new UserAlreadyExistsError()
     }
 
     const user = await this.usersRepository.create({
-      //executei o metodo create do meu repo
       name,
       email,
-      password: password_hash,
-    });
+      password_hash,
+    })
+
+    console.log('user', user);
 
     return {
       user,

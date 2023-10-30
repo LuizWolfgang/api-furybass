@@ -1,15 +1,15 @@
 
 import { expect, describe, it, beforeEach } from 'vitest'
-import { FetchAllVehiclesUseCase } from './fetch-announcement-by-category'
+import { FetchAnnouncementByCategoryUseCase } from './fetch-announcement-by-category'
 import { InMemoryAnnouncementRepository } from '../repositories/in-memory/in-memory-announcement-repository'
 
 let announcementRepository: InMemoryAnnouncementRepository
-let sut: FetchAllVehiclesUseCase
+let sut: FetchAnnouncementByCategoryUseCase
 
 describe('Fetch All Announcement Use Case', () => {
   beforeEach(() => {
     announcementRepository = new InMemoryAnnouncementRepository()
-    sut = new FetchAllVehiclesUseCase(announcementRepository)
+    sut = new FetchAnnouncementByCategoryUseCase(announcementRepository)
   })
 
   it('should be able to create announcement', async () => {

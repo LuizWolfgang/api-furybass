@@ -1,10 +1,11 @@
 import { FastifyInstance } from 'fastify'
 import { register } from './register'
 import { authenticate } from './authenticate'
+import { profile } from './profile'
+import { verifyJwt } from '../../../middlewares/verifyJwt'
 
 // import { verifyJwt } from '../../../middlewares/verify-jwt'
 // import { authenticate } from './authenticate'
-// import { profile } from './profile'
 // import { refresh } from './refresh'
 
 export async function usersRoutes(app: FastifyInstance) {
@@ -14,6 +15,6 @@ export async function usersRoutes(app: FastifyInstance) {
 
 
 
-  // //authenticate
-  // app.get('/profile', {onRequest: [verifyJwt]}, profile)
+  //authenticated
+  app.get('/me', { onRequest: [verifyJwt] }, profile)
 }

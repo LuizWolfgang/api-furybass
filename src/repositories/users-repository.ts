@@ -2,7 +2,7 @@ export interface Iuser {
   id?: string;
   name: string;
   email: string;
-  password: string;
+  password_hash: string;
 }
 
 export interface usersRepository {

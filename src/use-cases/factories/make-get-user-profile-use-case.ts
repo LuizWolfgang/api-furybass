@@ -1,9 +1,10 @@
 import { MongoUsersRepository } from "../../repositories/mongo/mongo-users-repository"
-import { RegisterUseCase } from "../register"
+import { getUserUseCase } from "../get-user-profile"
 
-export function makeRegisterUseCase() {
+
+export function makeGetUserProfileUseCase() {
   const usersRepository = new MongoUsersRepository()
-  const useCase = new RegisterUseCase(usersRepository)
+  const useCase = new getUserUseCase(usersRepository)
 
   return useCase
 }

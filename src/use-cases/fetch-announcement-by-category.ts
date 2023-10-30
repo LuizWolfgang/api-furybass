@@ -1,21 +1,21 @@
 import { IAnnouncement, announcementRepository } from "../repositories/announcement-repository";
 
-interface FetchAllVehiclesUseCaseRequest{
+interface FetchAnnouncementByCategoryUseCaseRequest{
   page: number;
   category: string;
 }
 
-interface FetchAllVehiclesUseCaseResponse {
+interface FetchAnnouncementByCategoryUseCaseResponse {
   announcement: IAnnouncement[];
 }
 
-export class FetchAllVehiclesUseCase {
+export class FetchAnnouncementByCategoryUseCase {
   constructor(private announcementRepository: announcementRepository) {}
 
   async execute({
     page,
     category
-  }: FetchAllVehiclesUseCaseRequest): Promise<FetchAllVehiclesUseCaseResponse> {
+  }: FetchAnnouncementByCategoryUseCaseRequest): Promise<FetchAnnouncementByCategoryUseCaseResponse> {
     const announcement = await this.announcementRepository.findManyAnnouncement(
       page,
       category

@@ -43,8 +43,6 @@ export class RegisterUseCase {
       password_hash,
     })
 
-    console.log('user', user);
-
     return {
       user,
     };

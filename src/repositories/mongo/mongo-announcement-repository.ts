@@ -1,18 +1,18 @@
 import { Announcement } from "../../models/Announcement";
-import { IAnnouncement, announcementRepository } from "../announcement-repository";
+import {
+  IAnnouncement,
+  announcementRepository,
+} from "../announcement-repository";
 
 export class MongoAnnouncementRepository implements announcementRepository {
-  async findById(id: string) {
-    const announcement = await Announcement.findById({ _id: id });
+  async findById(userId: string) {
+    const announcement = await Announcement.findOne({ userId: userId });
 
     if (!announcement) {
       return null;
     }
 
-    // Converta o Mongoose Document em IAnnouncement
-    const foundAnnouncement: IAnnouncement = announcement.toObject();
-
-    return foundAnnouncement;
+    return announcement;
   }
 
   async findManyAnnouncement(page: number, category: string) {
@@ -20,38 +20,41 @@ export class MongoAnnouncementRepository implements announcementRepository {
     const limit = 10;
 
     try {
-      const announcements = await Announcement.find({ category })
+      const announcements = await Announcement.find({ category: category})
         .skip(skip)
         .limit(limit)
         .exec();
 
+        console.log(`Found announcement`, announcements)
       // Converter os documentos do Mongoose para o tipo IAnnouncement
-      const convertedAnnouncements: IAnnouncement[] = announcements.map((announcement) => {
-        return announcement.toObject();
-      });
+      const convertedAnnouncements: IAnnouncement[] = announcements.map(
+        (announcement) => {
+          return announcement.toObject();
+        }
+      );
 
       return convertedAnnouncements;
     } catch (error) {
       // Lide com erros, como lançando ou registrando
-      throw new Error('Anúncio não encontrado');
+      throw new Error("Ad not found");
     }
   }
 
   async create(data: IAnnouncement) {
     const announcement = await Announcement.create({
-    userId: data.userId,
-    title: data.title,
-    description: data.description,
-    number: data.number,
-    price: data.price,
-    category: data.category,
-    type: data.type,
-    country: data.country,
-    city: data.city,
-    brand: data.brand,
-    km: data.km,
-    year: data.year,
-    mediaUrls: data.mediaUrls
+      userId: data.userId,
+      title: data.title,
+      description: data.description,
+      number: data.number,
+      price: data.price,
+      category: data.category,
+      type: data.type,
+      country: data.country,
+      city: data.city,
+      brand: data.brand,
+      km: data.km,
+      year: data.year,
+      mediaUrls: data.mediaUrls,
     });
 
     const createdAnnouncement: IAnnouncement = announcement.toObject();
@@ -64,17 +67,19 @@ export class MongoAnnouncementRepository implements announcementRepository {
       await Announcement.deleteOne({ _id: announcement.userId });
     } catch (error) {
       // Lide com erros, como lançando ou registrando
-      throw new Error('Erro ao excluir o anúncio');
+      throw new Error("Error deleting ad");
     }
   }
 
   async save(announcementProps: IAnnouncement) {
     try {
       // Encontre o anúncio pelo ID
-      const announcement = await Announcement.findById(announcementProps.userId);
+      const announcement = await Announcement.findById(
+        announcementProps.userId
+      );
 
       if (!announcement) {
-        throw new Error('Anúncio não encontrado');
+        throw new Error("Ad not found");
       }
 
       // Atualize os campos
@@ -95,8 +100,7 @@ export class MongoAnnouncementRepository implements announcementRepository {
       await announcement.save();
     } catch (error) {
       // Lide com erros, como lançando ou registrando
-      throw new Error('Erro ao atualizar o anúncio');
+      throw new Error("Error updating ad");
     }
   }
-
 }

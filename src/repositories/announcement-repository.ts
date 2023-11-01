@@ -16,7 +16,7 @@ export interface IAnnouncement {
 }
 
 export interface announcementRepository {
-  findById(id: string): Promise<IAnnouncement | null>;
+  findById(userId: string): Promise<IAnnouncement | null>;
   findManyAnnouncement(page: number, category: string): Promise<IAnnouncement[]>;
   create(data: IAnnouncement): Promise<IAnnouncement>;
   delete(announcement: IAnnouncement): Promise<void>

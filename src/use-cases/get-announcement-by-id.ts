@@ -12,6 +12,8 @@ interface GetAnnouncementUseCaseResponse {
 export class GetAnnouncementUseCase {
   constructor(private announcementRepository: announcementRepository) {}
   async execute({ userId }: GetAnnouncementUseCaseRequest): Promise<GetAnnouncementUseCaseResponse>{
+
+    console.log('USER Id', userId);
       const announcement = await this.announcementRepository.findById(userId)
 
       if(!announcement){

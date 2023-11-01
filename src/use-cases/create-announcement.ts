@@ -1,4 +1,5 @@
 import { IAnnouncement, announcementRepository } from "../repositories/announcement-repository";
+import { CategoryNotInformed } from "./errors/category-not-informed.error";
 import { ResourceNotExistErro } from "./errors/resource-not-exists-error";
 
 interface CreateAnnouncementUseCaseRequest {
@@ -113,6 +114,8 @@ export class CreateAnnouncementUseCase {
           announcementProduct
         );
 
+        console.log('USE CASE', announcement);
+
         return {
           announcement,
         };
@@ -121,6 +124,6 @@ export class CreateAnnouncementUseCase {
       throw new ResourceNotExistErro();
     }
 
-    throw new Error('category not informed');
+    throw new CategoryNotInformed()
   }
 }

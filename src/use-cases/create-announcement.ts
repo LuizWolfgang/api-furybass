@@ -114,8 +114,6 @@ export class CreateAnnouncementUseCase {
           announcementProduct
         );
 
-        console.log('USE CASE', announcement);
-
         return {
           announcement,
         };

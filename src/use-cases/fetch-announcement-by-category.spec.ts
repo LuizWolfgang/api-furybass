@@ -63,6 +63,7 @@ describe('Fetch All Announcement Use Case', () => {
     })
 
     const { announcement } = await sut.execute({
+      userId: '1234',
       page: 1,
       category: 'veiculo',
     })
@@ -103,6 +104,7 @@ describe('Fetch All Announcement Use Case', () => {
     }
 
     const { announcement } = await sut.execute({
+      userId: '11',
       page: 2,
       category: 'servico'
     })

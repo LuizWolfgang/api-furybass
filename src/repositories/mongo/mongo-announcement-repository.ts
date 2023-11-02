@@ -1,88 +1,87 @@
 import { Announcement } from "../../models/Announcement";
-import {
-  IAnnouncement,
-  announcementRepository,
-} from "../announcement-repository";
+import { IAnnouncement, announcementRepository } from "../announcement-repository";
 
 export class MongoAnnouncementRepository implements announcementRepository {
   async findById(userId: string) {
-    const announcement = await Announcement.findOne({ userId: userId });
+    try {
+      const announcement = await Announcement.findOne({ userId: userId });
 
-    if (!announcement) {
-      return null;
+      if (!announcement) {
+        return null;
+      }
+
+      return announcement;
+    } catch (error) {
+      throw new Error("An error occurred while fetching an announcement by ID.");
     }
-
-    return announcement;
   }
 
-  async findManyAnnouncement(page: number, category: string) {
-    const skip = (page - 1) * 10;
-    const limit = 10;
-
+  async findManyAnnouncement(userId: string, page: number, category: string) {
     try {
-      const announcements = await Announcement.find({ category: category})
+      const skip = (page - 1) * 10;
+      const limit = 10;
+
+      const announcements = await Announcement.find({ userId, category })
         .skip(skip)
         .limit(limit)
         .exec();
 
-        console.log(`Found announcement`, announcements)
-      // Converter os documentos do Mongoose para o tipo IAnnouncement
-      const convertedAnnouncements: IAnnouncement[] = announcements.map(
-        (announcement) => {
-          return announcement.toObject();
-        }
-      );
+      if (!announcements) {
+        return null;
+      }
+
+      const convertedAnnouncements: IAnnouncement[] = announcements.map((announcement) => {
+        return announcement.toObject();
+      });
 
       return convertedAnnouncements;
     } catch (error) {
-      // Lide com erros, como lançando ou registrando
-      throw new Error("Ad not found");
+      throw new Error("An error occurred while fetching announcements.");
     }
   }
 
   async create(data: IAnnouncement) {
-    const announcement = await Announcement.create({
-      userId: data.userId,
-      title: data.title,
-      description: data.description,
-      number: data.number,
-      price: data.price,
-      category: data.category,
-      type: data.type,
-      country: data.country,
-      city: data.city,
-      brand: data.brand,
-      km: data.km,
-      year: data.year,
-      mediaUrls: data.mediaUrls,
-    });
+    try {
+      const announcement = await Announcement.create({
+        userId: data.userId,
+        title: data.title,
+        description: data.description,
+        number: data.number,
+        price: data.price,
+        category: data.category,
+        type: data.type,
+        country: data.country,
+        city: data.city,
+        brand: data.brand,
+        km: data.km,
+        year: data.year,
+        mediaUrls: data.mediaUrls,
+      });
 
-    const createdAnnouncement: IAnnouncement = announcement.toObject();
+      const createdAnnouncement: IAnnouncement = announcement.toObject();
 
-    return createdAnnouncement;
+      return createdAnnouncement;
+    } catch (error) {
+      throw new Error("An error occurred while creating an announcement.");
+    }
   }
 
   async delete(announcement: IAnnouncement): Promise<void> {
     try {
       await Announcement.deleteOne({ _id: announcement.userId });
     } catch (error) {
-      // Lide com erros, como lançando ou registrando
-      throw new Error("Error deleting ad");
+      throw new Error("An error occurred while deleting an ad.");
     }
   }
 
   async save(announcementProps: IAnnouncement) {
     try {
-      // Encontre o anúncio pelo ID
-      const announcement = await Announcement.findById(
-        announcementProps.userId
-      );
+      const announcement = await Announcement.findById(announcementProps.userId);
 
       if (!announcement) {
         throw new Error("Ad not found");
       }
 
-      // Atualize os campos
       announcement.title = announcementProps.title;
       announcement.description = announcementProps.description;
       announcement.number = announcementProps.number;
@@ -96,11 +95,9 @@ export class MongoAnnouncementRepository implements announcementRepository {
       announcement.year = announcementProps.year;
       announcement.mediaUrls = announcementProps.mediaUrls;
 
-      // Salve as alterações
       await announcement.save();
     } catch (error) {
-      // Lide com erros, como lançando ou registrando
-      throw new Error("Error updating ad");
+      throw new Error("An error occurred while updating an ad.");
     }
   }
 }

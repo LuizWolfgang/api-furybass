@@ -9,7 +9,7 @@ export class InMemoryAnnouncementRepository implements announcementRepository {
     return data;
   }
 
-  async findManyAnnouncement(page: number, category:string){
+  async findManyAnnouncement(userId: string, page: number, category:string){
     return this.items.filter((item) => item.category.includes(category))
     .slice((page - 1) * 10, page * 10)
   }

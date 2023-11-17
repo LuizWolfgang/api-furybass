@@ -6,6 +6,7 @@ import { env } from "./env";
 import { announcementRoutes } from "./http/controllers/announcement/routes";
 import fastifyCookie from "@fastify/cookie";
 import { connectToMongoDB } from "./database/conection-mongo";
+import  multer from 'fastify-multer'
 
 export const app = fastify();
 
@@ -25,6 +26,8 @@ try {
   });
 
   app.register(fastifyCookie);
+  app.register(multer.contentParser)
+
   app.register(usersRoutes);
   app.register(announcementRoutes);
 
